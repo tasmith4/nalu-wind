@@ -47,6 +47,8 @@ public:
     auto& v_vel = scratchViews.get_scratch_view_2D(velocityOrdinal);
     auto& v_pres = scratchViews.get_scratch_view_1D(pressureOrdinal);
 
+    printf("TestKernel::execute v_vel(0,0) %f v_pres(0) %f\n", v_vel(0,0), v_pres(0));
+
     rhs(0) += v_vel(0, 0) + v_pres(0);
   }
 
@@ -227,6 +229,10 @@ do_assemble_elem_solver_test(
         "SCV volume = %f; expected = 0.125\n",
         stk::simd::get_data(scv_volume(4), 0));
       testKernel.execute(smdata.simdlhs, smdata.simdrhs, smdata.simdPrereqData);
+
+      printf("done with testKernel.execute smdata.simdrhs(0:1) %f %f\n",
+          stk::simd::get_data(smdata.simdrhs(0),0),
+          stk::simd::get_data(smdata.simdrhs(1),0));
 
       result.d_view(0) =
         abs(stk::simd::get_data((smdata.simdrhs(0) - 2.0), 0)) < 1.e-9 ? 1 : 0;
