@@ -47,7 +47,9 @@ public:
     auto& v_vel = scratchViews.get_scratch_view_2D(velocityOrdinal);
     auto& v_pres = scratchViews.get_scratch_view_1D(pressureOrdinal);
 
-    printf("TestKernel::execute v_vel(0,0) %f v_pres(0) %f\n", v_vel(0,0), v_pres(0));
+    printf("TestKernel::execute v_vel(0,0) %f v_pres(0) %f\n",
+        stk::simd::get_data(v_vel(0,0), 0),
+        stk::simd::get_data(v_pres(0), 0));
 
     rhs(0) += v_vel(0, 0) + v_pres(0);
   }
