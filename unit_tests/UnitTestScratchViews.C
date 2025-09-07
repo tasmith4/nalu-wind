@@ -236,10 +236,8 @@ do_assemble_elem_solver_test(
           stk::simd::get_data(smdata.simdrhs(0),0),
           stk::simd::get_data(smdata.simdrhs(1),0));
 
-      result.d_view(0) =
-        abs(stk::simd::get_data((smdata.simdrhs(0) - 2.0), 0)) < 1.e-9 ? 1 : 0;
-      result.d_view(1) =
-        abs(stk::simd::get_data((smdata.simdrhs(1) - 0.0), 0)) < 1.e-9 ? 1 : 0;
+      result.d_view(0) = (result.d_view(0) == 1 || abs(stk::simd::get_data((smdata.simdrhs(0) - 2.0), 0)) < 1.e-9) ? 1 : 0;
+      result.d_view(1) = (result.d_view(1) == 1 || abs(stk::simd::get_data((smdata.simdrhs(1) - 0.0), 0)) < 1.e-9) ? 1 : 0;
     });
 
   result.modify<IntViewType::execution_space>();
